@@ -1756,13 +1756,7 @@ class RoomManager:
         :type room: Room
         """
 
-        def check_connection():
-            connections = self.getConnections()
-            if not bool(connections):
-                logger.error('RECONNECTING...')
-                self.joinRoom(room.name)
-
-        self.setInterval(15, check_connection)
+        pass
 
     def onReconnect(self, room):
         """
@@ -1780,7 +1774,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        self.joinRoom(room.name)
 
     def on_disconnect(self, room):
         """
@@ -1789,7 +1783,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        self.joinRoom(room.name)
 
     def onLoginFail(self, room):
         """
@@ -2289,7 +2283,7 @@ class RoomManager:
             self._tick()
 
     @classmethod
-    def easy_start(cl, rooms=None, name=None, password=None, commands=None, weather=None, pm=True):
+    def easy_start(cl, rooms=None, name=None, password=None, commands=None, weather=None):
         """
         Prompts the user for missing info, then starts.
 
@@ -2318,7 +2312,7 @@ class RoomManager:
             password = str(input("User password: "))
         if password == "":
             password = None
-        self = cl(name, password, commands, weather)
+        self = cl(name, password, commands, weather, rooms)
         for room in rooms:
             self.joinRoom(room)
         self.main()

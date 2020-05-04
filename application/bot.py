@@ -1,5 +1,4 @@
 """Core bot logic."""
-import re
 from loguru import logger
 from .ch import RoomManager
 from .logic import (basic_message,
@@ -14,11 +13,19 @@ from .logic import (basic_message,
                     wiki_summary,
                     find_imdb_movie)
 
-logger.add('logs/info.log', format="<green>{time:MM-DD HH:mm A}</green> <white>{message}</white>",
-           catch=True, colorize=True, rotation="10 MB")
+logger.add(
+    'logs/info.log',
+    format="<green>{time:MM-DD HH:mm A}</green> <white>{message}</white>",
+    catch=True,
+    colorize=True,
+    rotation="10 MB"
+)
 
 
 class Bot(RoomManager):
+
+    def __init__(self, name, password, commands, weather, rooms):
+        super().__init__()
 
     def on_init(self):
         """Initialize bot."""
@@ -26,13 +33,13 @@ class Bot(RoomManager):
         self.setFontColor("000000")
         self.setFontFace("Arial")
         self.setFontSize(11)
-        self.create_message('basic', 'Beep boop I\'m dead inside 🤖')
 
     @staticmethod
     def _chat(room, message):
         """Construct a response to a valid command."""
         room.message(message)
 
+    @logger.catch
     def create_message(self, cmd_type, content, command=None, args=None):
         response = None
         if cmd_type == 'basic':
@@ -59,6 +66,9 @@ class Bot(RoomManager):
             response = wiki_summary(args)
         elif cmd_type == 'imdb' and args:
             response = find_imdb_movie(args)
+        elif cmd_type == 'lastmsg' and args:
+            # response = self._Room.getLastMessage(user=args)
+            pass
         return response
 
     @logger.catch
