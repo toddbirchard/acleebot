@@ -72,7 +72,7 @@ def giphy_image_search(search_term) -> Optional[str]:
     try:
         req = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
     except HTTPError as e:
-        LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e.response.content}")
+        LOGGER.info(f"Giphy failed to fetch `{search_term}`: {e.response.content}")
         if req.status_code != 200:
             return "image not found :("
     try:

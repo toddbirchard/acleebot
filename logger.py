@@ -99,7 +99,7 @@ def create_logger():
             catch=True,
         )
         logger.add(
-            "errors.log",
+            "logs/errors.log",
             level="ERROR",
             rotation="500 MB",
             compression="zip",
